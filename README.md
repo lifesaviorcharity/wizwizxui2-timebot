@@ -132,7 +132,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 # Features
 
 - nowpayments - zarinpal - nextpay portal and rial currency
-- Support for - xtls - tls - reality - Grpc - ws - tcp
+- Support for - xhttp - xtls - tls - reality - Grpc - ws - tcp
 - vless - vmess - trojan support
 - The possibility of extending the service
 - Display the configuration profile as a sub (in the v2ray software)
