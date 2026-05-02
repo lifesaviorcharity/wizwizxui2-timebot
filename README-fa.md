@@ -140,7 +140,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 # امکانات
 
 - درگاه nowpayments - zarinpal - nextpay و ارزی ریالی
-- پشتیبانی از - xtls - tls - reality - Grpc - ws - tcp
+- پشتیبانی از - xtls - tls - reality - Grpc - ws - tcp - xhttp
 - پشتیبانی vless - vmess - trojan
 - امکان تمدید سرویس
 - نمایش مشخصات کانفیگ به صورت ساب ( داخل نرم افزار v2ray )
