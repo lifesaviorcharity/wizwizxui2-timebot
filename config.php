@@ -2215,7 +2215,7 @@ function deleteClient($server_id, $inbound_id, $uuid, $delete = 0){
         }
         
         if($serverType == "sanaei" || $serverType == "alireza"){
-            if($serverType == "sanaei") $url = "$panel_url/panel/inbound/" . $inbound_id . "/delClient/" . rawurlencode($uuid);
+            if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/" . $inbound_id . "/delClient/" . rawurlencode($uuid);
             elseif($serverType == "alireza") $url = "$panel_url/xui/inbound/" . $inbound_id . "/delClient/" . rawurlencode($uuid);
 
             curl_setopt_array($curl, array(
@@ -2342,7 +2342,7 @@ function editInboundRemark($server_id, $uuid, $newRemark){
         return $loginResponse;
     }
 
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/update/$inbound_id";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/update/$inbound_id";
     else $url = "$panel_url/xui/inbound/update/$inbound_id";
 
     curl_setopt_array($curl, array(
@@ -2464,7 +2464,7 @@ function editInboundTraffic($server_id, $uuid, $volume, $days, $editType = null)
         return $loginResponse;
     }
 
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/update/$inbound_id";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/update/$inbound_id";
     else $url = "$panel_url/xui/inbound/update/$inbound_id";
 
     $phost = str_ireplace('https://','',str_ireplace('http://','',$panel_url));
@@ -2571,7 +2571,7 @@ function changeInboundState($server_id, $uuid){
         return $loginResponse;
     }
 
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/update/$inbound_id";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/update/$inbound_id";
     else $url = "$panel_url/xui/inbound/update/$inbound_id";
 
     $phost = str_ireplace('https://','',str_ireplace('http://','',$panel_url));
@@ -2687,7 +2687,7 @@ function renewInboundUuid($server_id, $uuid){
         return $loginResponse;
     }
 
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/update/$inbound_id";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/update/$inbound_id";
     else $url = "$panel_url/xui/inbound/update/$inbound_id";
 
     $phost = str_ireplace('https://','',str_ireplace('http://','',$panel_url));
@@ -2808,7 +2808,7 @@ function changeClientState($server_id, $inbound_id, $uuid){
             "settings" => $newSetting
             );
             
-        if($serverType == "sanaei") $url = "$panel_url/panel/inbound/updateClient/" . rawurlencode($uuid);
+        if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/updateClient/" . rawurlencode($uuid);
         else $url = "$panel_url/xui/inbound/updateClient/" . rawurlencode($uuid);
         
         curl_setopt_array($curl, array(
@@ -2955,7 +2955,7 @@ function renewClientUuid($server_id, $inbound_id, $uuid){
             "settings" => $newSetting
             );
             
-        if($serverType == "sanaei") $url = "$panel_url/panel/inbound/updateClient/" . rawurlencode($uuid);
+        if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/updateClient/" . rawurlencode($uuid);
         else $url = "$panel_url/xui/inbound/updateClient/" . rawurlencode($uuid);
         
         curl_setopt_array($curl, array(
@@ -3108,7 +3108,7 @@ function editClientRemark($server_id, $inbound_id, $uuid, $newRemark){
             "settings" => $newSetting
             );
             
-        if($serverType == "sanaei") $url = "$panel_url/panel/inbound/updateClient/" . rawurlencode($uuid);
+        if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/updateClient/" . rawurlencode($uuid);
         else $url = "$panel_url/xui/inbound/updateClient/" . rawurlencode($uuid);
         
         curl_setopt_array($curl, array(
@@ -3278,7 +3278,7 @@ function editClientTraffic($server_id, $inbound_id, $uuid, $volume, $days, $edit
             "settings" => $newSetting
             );
             
-        if($serverType == "sanaei") $url = "$panel_url/panel/inbound/updateClient/" . rawurlencode($uuid);
+        if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/updateClient/" . rawurlencode($uuid);
         else $url = "$panel_url/xui/inbound/updateClient/" . rawurlencode($uuid);
         
         curl_setopt_array($curl, array(
@@ -3407,7 +3407,7 @@ function deleteInbound($server_id, $uuid, $delete = 0){
             return $loginResponse;
         }
         
-        if($serverType == "sanaei") $url = "$panel_url/panel/inbound/del/$inbound_id";
+        if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/del/$inbound_id";
         else $url = "$panel_url/xui/inbound/del/$inbound_id";
        
         curl_setopt_array($curl, array(
@@ -3483,7 +3483,7 @@ function resetIpLog($server_id, $remark){
         return $loginResponse;
     }
     
-    if($serverType == "sanaei") $url = $panel_url. "/panel/inbound/clearClientIps/" . urlencode($remark);
+    if($serverType == "sanaei") $url = $panel_url. "/panel/api/inbounds/clearClientIps/" . urlencode($remark);
     else $url = $panel_url. "/xui/inbound/clearClientIps/" . urlencode($remark);
 
     curl_setopt_array($curl, array(
@@ -3558,7 +3558,7 @@ function resetClientTraffic($server_id, $remark, $inboundId = null){
         curl_close($curl);
         return $loginResponse;
     }
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/$inboundId/resetClientTraffic/" . rawurlencode($remark);
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/$inboundId/resetClientTraffic/" . rawurlencode($remark);
     elseif($inboundId == null) $url = "$panel_url/xui/inbound/resetClientTraffic/" . rawurlencode($remark);
     else $url = "$panel_url/xui/inbound/$inboundId/resetClientTraffic/" . rawurlencode($remark);
     curl_setopt_array($curl, array(
@@ -3713,7 +3713,7 @@ function addInboundAccount($server_id, $client_id, $inbound_id, $expiryTime, $re
             "settings" => $newSetting
             );
             
-        if($serverType == "sanaei") $url = "$panel_url/panel/inbound/addClient/";
+        if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/addClient";
         else $url = "$panel_url/xui/inbound/addClient/";
 
         curl_setopt_array($curl, array(
@@ -4474,7 +4474,7 @@ function updateConfig($server_id, $inboundId, $protocol, $netType = 'tcp', $secu
         return $loginResponse;
     }
     
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/update/$iid";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/update/$iid";
     else $url = "$panel_url/xui/inbound/update/$iid";
     curl_setopt_array($curl, array(
         CURLOPT_URL => $url,
@@ -4954,7 +4954,7 @@ function editInbound($server_id, $uniqid, $uuid, $protocol, $netType = 'tcp', $s
         return $loginResponse;
     }
     
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/update/$iid";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/update/$iid";
     else $url = "$panel_url/xui/inbound/update/$iid";
     
     curl_setopt_array($curl, array(
@@ -5475,7 +5475,7 @@ function getJson($server_id){
         curl_close($curl);
         return $loginResponse;
     }
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/list";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/list";
     else $url = "$panel_url/xui/inbound/list";
     curl_setopt_array($curl, array(
         CURLOPT_URL => $url,
@@ -5486,7 +5486,7 @@ function getJson($server_id){
         CURLOPT_TIMEOUT => 15,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_CUSTOMREQUEST => ($serverType == "sanaei") ? 'GET' : 'POST',
         CURLOPT_HEADER => false,
         CURLOPT_HTTPHEADER => array(
             'User-Agent:  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:108.0) Gecko/20100101 Firefox/108.0',
@@ -6188,7 +6188,7 @@ sendMessage(curl_error($curl));
         return $loginResponse;
     }
     
-    if($serverType == "sanaei") $url = "$panel_url/panel/inbound/add";
+    if($serverType == "sanaei") $url = "$panel_url/panel/api/inbounds/add";
     else $url = "$panel_url/xui/inbound/add";
     
     curl_setopt_array($curl, array(
