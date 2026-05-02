@@ -21,7 +21,7 @@
 <h1 align="center"/>ویزویز</h1>
 
 <p align="center">
-فروش آسان با <a href="https://github.com/lifesaviorcharity/wizwizxui2-timebot">ویزویز</a> نصب فقط با یک دستور
+فروش آسان با <a href="https://github.com/lifesaviorcharity/wizwizxui2-timebot">ویزویز 2</a> نصب فقط با یک دستور
 </p>
 
 <p align="center">
