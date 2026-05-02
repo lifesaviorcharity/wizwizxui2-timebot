@@ -3920,6 +3920,27 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                     $kcpType = $kcpSettings->header->type;
                     $kcpSeed = $kcpSettings->seed;
                 }
+                if($netType == 'xhttp') {
+                    $xhttpSettings = json_decode($row->streamSettings)->xhttpSettings;
+                    $path = $xhttpSettings->path ?? '/';
+                    $host = $xhttpSettings->host ?? '';
+                    $xhttpMode = $xhttpSettings->mode ?? 'auto';
+                    $xhttpPadding = $xhttpSettings->xPaddingBytes ?? '';
+                    $xhttpObfsMode = $xhttpSettings->xPaddingObfsMode ?? false;
+                    if($tlsStatus == 'tls'){
+                        if(isset($tlsSetting->serverName)) $sni = $tlsSetting->serverName;
+                        if(isset($tlsSetting->settings->serverName)) $sni = $tlsSetting->settings->serverName;
+                    }
+                    elseif($tlsStatus == 'reality'){
+                        $realitySettings = json_decode($row->streamSettings)->realitySettings;
+                        $fp = $realitySettings->settings->fingerprint;
+                        $spiderX = $realitySettings->settings->spiderX;
+                        $pbk = $realitySettings->settings->publicKey;
+                        $sni = $realitySettings->serverNames[0];
+                        $flow = $settings['clients'][0]['flow'] ?? '';
+                        $sid = $realitySettings->shortIds[0];
+                    }
+                }
                 
                 break;
             }
@@ -3980,6 +4001,25 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                     $kcpSettings = json_decode($row->streamSettings)->kcpSettings;
                     $kcpType = $kcpSettings->header->type;
                     $kcpSeed = $kcpSettings->seed;
+                }elseif($netType == 'xhttp') {
+                    $xhttpSettings = json_decode($row->streamSettings)->xhttpSettings;
+                    $path = $xhttpSettings->path ?? '/';
+                    $host = $xhttpSettings->host ?? '';
+                    $xhttpMode = $xhttpSettings->mode ?? 'auto';
+                    $xhttpPadding = $xhttpSettings->xPaddingBytes ?? '';
+                    $xhttpObfsMode = $xhttpSettings->xPaddingObfsMode ?? false;
+                    if($tlsStatus == 'tls'){
+                        if(isset($tlsSetting->serverName)) $sni = $tlsSetting->serverName;
+                        if(isset($tlsSetting->settings->serverName)) $sni = $tlsSetting->settings->serverName;
+                    }
+                    elseif($tlsStatus == 'reality'){
+                        $realitySettings = json_decode($row->streamSettings)->realitySettings;
+                        $fp = $realitySettings->settings->fingerprint;
+                        $spiderX = $realitySettings->settings->spiderX;
+                        $pbk = $realitySettings->settings->publicKey;
+                        $sni = $realitySettings->serverNames[0];
+                        $sid = $realitySettings->shortIds[0];
+                    }
                 }
                 if($tlsStatus == 'tls'){
                     $serverName = $tlsSetting->serverName;
@@ -4038,6 +4078,19 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                     }
     
                 }
+                if($netType == 'xhttp') {
+                    $xpsting = "&path=" . rawurlencode($path) . "&host=$host";
+                    if(!empty($xhttpMode) && $xhttpMode != 'auto') $xpsting .= "&mode=$xhttpMode";
+                    if(!empty($xhttpPadding)) $xpsting .= "&x_padding_bytes=" . rawurlencode($xhttpPadding);
+                    if($xhttpObfsMode) {
+                        $extra = ['xPaddingObfsMode' => true];
+                        if(!empty($xhttpPadding)) $extra['xPaddingBytes'] = $xhttpPadding;
+                        $xpsting .= "&extra=" . rawurlencode(json_encode($extra));
+                    }
+                    if($tlsStatus == 'tls' && strlen($sni) > 1) $xpsting .= "&sni=$sni";
+                    if($tlsStatus == 'reality') $xpsting .= "&fp=$fp&pbk=$pbk&sni=$sni" . ($flow != "" ? "&flow=$flow" : "") . "&sid=$sid&spx=$spiderX";
+                    $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus{$xpsting}#$remark";
+                }
             }
     
             if($protocol == 'trojan'){
@@ -4054,6 +4107,18 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                         $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus&serviceName=$serviceName#$remark";
                     }
     
+                }
+                if($netType == 'xhttp') {
+                    $xpsting = "&path=" . rawurlencode($path) . "&host=$host";
+                    if(!empty($xhttpMode) && $xhttpMode != 'auto') $xpsting .= "&mode=$xhttpMode";
+                    if(!empty($xhttpPadding)) $xpsting .= "&x_padding_bytes=" . rawurlencode($xhttpPadding);
+                    if($xhttpObfsMode) {
+                        $extra = ['xPaddingObfsMode' => true];
+                        if(!empty($xhttpPadding)) $extra['xPaddingBytes'] = $xhttpPadding;
+                        $xpsting .= "&extra=" . rawurlencode(json_encode($extra));
+                    }
+                    if(strlen($sni) > 1) $xpsting .= "&sni=$sni";
+                    $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus{$xpsting}#$remark";
                 }
             }elseif($protocol == 'vmess'){
                 $vmessArr = [
@@ -4101,6 +4166,13 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                 if($netType == 'kcp'){
                     $vmessArr['path'] = $kcpSeed ? $kcpSeed : $vmessArr['path'];
     	        }
+                if($netType == 'xhttp'){
+                    $vmessArr['path'] = $path ?? '/';
+                    $vmessArr['host'] = $host ?? '';
+                    if(!empty($xhttpMode) && $xhttpMode != 'auto') $vmessArr['mode'] = $xhttpMode;
+                    if(!empty($xhttpPadding)) $vmessArr['x_padding_bytes'] = $xhttpPadding;
+                    if($xhttpObfsMode) $vmessArr['xPaddingObfsMode'] = true;
+                }
                 if(strlen($sni) > 1) $vmessArr['sni'] = $sni;
                 $urldata = base64_encode(json_encode($vmessArr,JSON_UNESCAPED_SLASHES,JSON_PRETTY_PRINT));
                 $outputlink = "vmess://$urldata";
@@ -4147,6 +4219,19 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                         $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus&serviceName=$serviceName#$remark";
                     }
                 }
+                elseif($netType == 'xhttp') {
+                    $xpsting = "&path=" . rawurlencode($path) . "&host=$host";
+                    if(!empty($xhttpMode) && $xhttpMode != 'auto') $xpsting .= "&mode=$xhttpMode";
+                    if(!empty($xhttpPadding)) $xpsting .= "&x_padding_bytes=" . rawurlencode($xhttpPadding);
+                    if($xhttpObfsMode) {
+                        $extra = ['xPaddingObfsMode' => true];
+                        if(!empty($xhttpPadding)) $extra['xPaddingBytes'] = $xhttpPadding;
+                        $xpsting .= "&extra=" . rawurlencode(json_encode($extra));
+                    }
+                    if($tlsStatus == 'tls' && strlen($sni) > 1) $xpsting .= "&sni=$sni";
+                    if($tlsStatus == 'reality') $xpsting .= "&fp=$fp&pbk=$pbk&sni=$sni" . ($flow != "" ? "&flow=$flow" : "") . "&sid=$sid&spx=$spiderX";
+                    $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus{$xpsting}#$remark";
+                }
             }elseif($protocol == 'trojan'){                
                 $psting = '';
                 if($header_type == 'http') $psting .= "&path=/&host=$host";
@@ -4161,6 +4246,18 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                         $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus&serviceName=$serviceName#$remark";
                     }
     
+                }
+                if($netType == 'xhttp') {
+                    $xpsting = "&path=" . rawurlencode($path) . "&host=$host";
+                    if(!empty($xhttpMode) && $xhttpMode != 'auto') $xpsting .= "&mode=$xhttpMode";
+                    if(!empty($xhttpPadding)) $xpsting .= "&x_padding_bytes=" . rawurlencode($xhttpPadding);
+                    if($xhttpObfsMode) {
+                        $extra = ['xPaddingObfsMode' => true];
+                        if(!empty($xhttpPadding)) $extra['xPaddingBytes'] = $xhttpPadding;
+                        $xpsting .= "&extra=" . rawurlencode(json_encode($extra));
+                    }
+                    if(strlen($sni) > 1) $xpsting .= "&sni=$sni";
+                    $outputlink = "$protocol://$uniqid@$server_ip:$port?type=$netType&security=$tlsStatus{$xpsting}#$remark";
                 }
             }elseif($protocol == 'vmess'){
                 $vmessArr = [
@@ -4202,6 +4299,13 @@ function getConnectionLink($server_id, $uniqid, $protocol, $remark, $port, $netT
                 if($netType == 'kcp'){
                     $vmessArr['path'] = $kcpSeed ? $kcpSeed : $vmessArr['path'];
     	        }
+                if($netType == 'xhttp'){
+                    $vmessArr['path'] = $path ?? '/';
+                    $vmessArr['host'] = $host ?? '';
+                    if(!empty($xhttpMode) && $xhttpMode != 'auto') $vmessArr['mode'] = $xhttpMode;
+                    if(!empty($xhttpPadding)) $vmessArr['x_padding_bytes'] = $xhttpPadding;
+                    if($xhttpObfsMode) $vmessArr['xPaddingObfsMode'] = true;
+                }
     
                 if(strlen($sni) > 1) $vmessArr['sni'] = $sni;
                 $urldata = base64_encode(json_encode($vmessArr,JSON_UNESCAPED_SLASHES,JSON_PRETTY_PRINT));

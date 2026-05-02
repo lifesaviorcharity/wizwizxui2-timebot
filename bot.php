@@ -6684,7 +6684,7 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan|addNewMarzbanPlan)/',$userInfo['s
         
         if($userInfo['step'] == "addNewPlan"){
             $sql = ("UPDATE `server_plans` SET `volume`=?,`step`=55 WHERE `active`=0");
-            $msg = "🔉 | لطفا نوع شبکه این پلن را در انتخاب کنید  (ws | tcp | grpc) :";
+            $msg = "🔉 | لطفا نوع شبکه این پلن را در انتخاب کنید  (ws | tcp | grpc | xhttp) :";
         }elseif($userInfo['step'] == "addNewRahgozarPlan" || $userInfo['step'] == "addNewMarzbanPlan"){
             $sql = ("UPDATE `server_plans` SET `volume`=?, `type`='ws', `step`=4 WHERE `active`=0");
             $msg = '🔻یه توضیح برای پلن مورد نظرت بنویس:';
@@ -6697,8 +6697,8 @@ if(preg_match('/(addNewRahgozarPlan|addNewPlan|addNewMarzbanPlan)/',$userInfo['s
         sendMessage($msg);
     }
     if($step==55 and $text!=$buttonValues['cancel']){
-        if($text != "tcp" && $text != "ws" && $text != "grpc"){
-            sendMessage("لطفا فقط نوع (ws | tcp | grpc) را وارد کنید");
+        if($text != "tcp" && $text != "ws" && $text != "grpc" && $text != "xhttp"){
+            sendMessage("لطفا فقط نوع (ws | tcp | grpc | xhttp) را وارد کنید");
             exit();
         }
         $stmt = $connection->prepare("UPDATE `server_plans` SET `type`=?,`step`=4 WHERE `active`=0");
