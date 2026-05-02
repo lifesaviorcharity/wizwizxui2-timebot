@@ -120,9 +120,10 @@ bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
 
 # Donation
 
-- Tron (TRX): `TY8j7of18gbMtneB8bbL7SZk5gcntQEemG`
-- Bitcoin: `bc1qcnkjnqvs7kyxvlfrns8t4ely7x85dhvz5gqge4`
-- Dogecoin: `DMyGMghEh4W55P3VeVHntCN3vYAFtshvVH`
+- Tron/USDT (TRX): `TE8Mfcr7jcTv1uF8ThM2MgV9FuRf2n2kXM`
+- USDC (SOL) : `E2ReuLCNDY26vkSXim4Guq6YEDSjyJ2jumhit6wD8Lvs`
+- Bitcoin: `bc1qd8vmgamxgtd2x7stk3dytwrj97xx0glcfffc2r`
+- Dogecoin: `DEGg4YS9RQsw7DNfS5rRJtofmhZZVGy8y7`
 
 <br>
 <hr>
